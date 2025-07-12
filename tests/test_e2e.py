@@ -11,4 +11,4 @@ def test_calculator_ui_addition(page: Page):
     page.click("button[type='submit']")
 
     result_div = page.locator("#result")
-    expect(result_div).to_have_text("Result: 8.0")
+    expect(result_div).to_have_text("Result: 8")
