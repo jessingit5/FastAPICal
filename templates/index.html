@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FastAPI Calculator</title>
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f4f4f9; }
+        .container { padding: 2rem; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); background-color: white; }
+        input, select, button { margin: 0.5rem; padding: 0.5rem; }
+        #result { margin-top: 1rem; font-weight: bold; font-size: 1.2rem; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Calculator</h1>
+        <form id="calc-form">
+            <input type="number" name="operand1" placeholder="Operand 1" required>
+            <select name="operation">
+                <option value="add">+</option>
+                <option value="subtract">-</option>
+                <option value="multiply">*</option>
+                <option value="divide">/</option>
+            </select>
+            <input type="number" name="operand2" placeholder="Operand 2" required>
+            <button type="submit">Calculate</button>
+        </form>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        document.getElementById('calc-form').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const operand1 = formData.get('operand1');
+            const operand2 = formData.get('operand2');
+            const operation = formData.get('operation');
+            const response = await fetch(`/calculate?operand1=${operand1}&operand2=${operand2}&operation=${operation}`);
+            const data = await response.json();
+
+            if (response.ok) {
+                document.getElementById('result').innerText = 'Result: ' + data.result;
+            } else {
+                document.getElementById('result').innerText = 'Error: ' + data.detail;
+            }
+        });
+    </script>
+</body>
+</html>
